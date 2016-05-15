@@ -24,7 +24,7 @@ func init() {
 	deployCmd.Flags().StringVarP(&profile, "profile", "p", "", "Profile to generate and output to /etc/salt/cloud.profiles.d for salt-cloud to use")
 	deployCmd.Flags().StringVarP(&roles, "roles", "r", "", "List of roles to assign to the host in D42 [eg: dcos,dcos-master]")
 	deployCmd.Flags().StringVarP(&osTemplate, "template", "t", "", "Which OS template you want to use [eg: Ubuntu, CentOS, someothertemplatename]")
-	deployCmd.Flags().BoolVarP(&ipam, "no-ipam", "", true, "Whether or not to use Device42 IPAM [This is only used internally]")
+	deployCmd.Flags().BoolVarP(&ipam, "no-ipam", "", false, "Whether or not to use Device42 IPAM [This is only used internally]")
 	deployCmd.Flags().BoolVarP(&log.IsDebugging, "debug", "d", false, "Turn debugging on")
 }
 
