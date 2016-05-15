@@ -1,3 +1,3 @@
 # Pepper
 
-## README coming soon!
+## Coming soon!
