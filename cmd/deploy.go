@@ -78,80 +78,45 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 		hosts := args
 
 		var ipAddress string
+		var serviceLevel string
 
 		for _, host := range hosts {
 			if ipam == true {
-				if err := device42.ReadConfig(); err != nil {
+				if err := device42.ReadConfig(environment); err != nil {
 					log.Die("%s", err)
 				}
-				if environment == "prd" {
-					// Get a new IP
-					newIP, err := device42.GetNextIP(device42.PrdRange)
-					if err != nil {
+				// Get a new IP
+				newIP, err := device42.GetNextIP(device42.IPRange)
+				if err != nil {
+					log.Die("%s", err)
+				}
+				ipAddress = newIP
+				// Create the Device
+				if err := device42.CreateDevice(host, serviceLevel); err != nil {
+					if err = device42.DeleteDevice(host); err != nil {
 						log.Die("%s", err)
 					}
-					ipAddress = newIP
-					// Create the Device
-					if err := device42.CreateDevice(host, "Production"); err != nil {
-						if err = device42.DeleteDevice(host); err != nil {
-							log.Die("%s", err)
-						}
+					log.Die("%s", err)
+				}
+				// Reserve IP
+				if err := device42.ReserveIP(newIP, host); err != nil {
+					if err = device42.MakeIPAvailable(newIP); err != nil {
 						log.Die("%s", err)
 					}
-					// Reserve IP
-					if err := device42.ReserveIP(newIP, host); err != nil {
-						if err = device42.MakeIPAvailable(newIP); err != nil {
-							log.Die("%s", err)
-						}
-						if err = device42.DeleteDevice(host); err != nil {
-							log.Die("%s", err)
-						}
+					if err = device42.DeleteDevice(host); err != nil {
 						log.Die("%s", err)
 					}
-					// Update custom fields
-					if err := device42.UpdateCustomFields(host, "roles", roles); err != nil {
-						if err = device42.MakeIPAvailable(newIP); err != nil {
-							log.Die("%s", err)
-						}
-						if err = device42.DeleteDevice(host); err != nil {
-							log.Die("%s", err)
-						}
+					log.Die("%s", err)
+				}
+				// Update custom fields
+				if err := device42.UpdateCustomFields(host, "roles", roles); err != nil {
+					if err = device42.MakeIPAvailable(newIP); err != nil {
 						log.Die("%s", err)
 					}
-				} else if environment == "dev" {
-					// Get a new IP
-					newIP, err := device42.GetNextIP(device42.DevRange)
-					if err != nil {
+					if err = device42.DeleteDevice(host); err != nil {
 						log.Die("%s", err)
 					}
-					ipAddress = newIP
-					// Create the Device
-					if err := device42.CreateDevice(host, "Development"); err != nil {
-						if err = device42.DeleteDevice(host); err != nil {
-							log.Die("%s", err)
-						}
-						log.Die("%s", err)
-					}
-					// Reserve IP
-					if err := device42.ReserveIP(newIP, host); err != nil {
-						if err = device42.MakeIPAvailable(newIP); err != nil {
-							log.Die("%s", err)
-						}
-						if err = device42.DeleteDevice(host); err != nil {
-							log.Die("%s", err)
-						}
-						log.Die("%s", err)
-					}
-					// Update custom fields
-					if err := device42.UpdateCustomFields(host, "roles", roles); err != nil {
-						if err = device42.MakeIPAvailable(newIP); err != nil {
-							log.Die("%s", err)
-						}
-						if err = device42.DeleteDevice(host); err != nil {
-							log.Die("%s", err)
-						}
-						log.Die("%s", err)
-					}
+					log.Die("%s", err)
 				}
 			}
 			switch platform {
