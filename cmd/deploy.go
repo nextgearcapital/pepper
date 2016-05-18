@@ -81,7 +81,7 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 		var serviceLevel string
 
 		for _, host := range hosts {
-			if ipam == true {
+			if ipam != true {
 				if err := device42.ReadConfig(environment); err != nil {
 					log.Die("%s", err)
 				}
