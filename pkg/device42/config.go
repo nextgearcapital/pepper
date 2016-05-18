@@ -25,6 +25,8 @@ var (
 	TestRange = Config.GetString("ip_ranges.testing")
 	// StageRange :
 	StageRange = Config.GetString("ip_ranges.staging")
+	// UATRange :
+	UATRange = Config.GetString("ip_ranges.uat")
 	// BaseURL :
 	BaseURL = address + "/api/1.0/"
 )
