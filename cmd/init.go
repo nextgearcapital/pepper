@@ -31,9 +31,11 @@ var initCmd = &cobra.Command{
 		if err := os.MkdirAll("/etc/pepper/config.d", 0644); err != nil {
 			log.Warn("%s", err)
 		}
+		log.Info("Created /etc/pepper/config.d")
 		if err := os.MkdirAll("/etc/pepper/provider.d", 0644); err != nil {
 			log.Warn("%s", err)
 		}
+		log.Info("Created /etc/pepper/provider.d")
 
 		compiled, err := template.New("vsphere_profile").Parse(configTemplate)
 		if err != nil {
