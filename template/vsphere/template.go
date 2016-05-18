@@ -45,6 +45,10 @@ var (
 
 // Prepare :
 func (profile *ProfileConfig) Prepare(platform, environment, instancetype, template, ipAddress string) error {
+	if err := os.MkdirAll(configPath, 0644); err != nil {
+		log.Warn("%s", err)
+	}
+
 	profile.Platform = platform
 	profile.Environment = environment
 	profile.InstanceType = instancetype
