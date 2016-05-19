@@ -17,7 +17,7 @@ func UpdateCustomFields(host, key, value string) error {
 
 	paramData := params.Encode()
 
-	_, err := makeRequest(paramData, updateCustomFields, "PUT")
+	_, err := makeRequest("PUT", updateCustomFields, paramData)
 	if err != nil {
 		return err
 	}

@@ -13,16 +13,16 @@ var Config = viper.New()
 
 var (
 	// Username :
-	Username = Config.GetString("username")
+	Username string
 	// Password :
-	Password = Config.GetString("password")
-	address  = Config.GetString("address")
+	Password string
+	address  string
 	// IPRange :
-	IPRange = Config.GetString("ip_range")
+	IPRange string
 	// ServiceLevel :
-	ServiceLevel = Config.GetString("service_level")
+	ServiceLevel string
 	// BaseURL :
-	BaseURL = address + "/api/1.0/"
+	BaseURL string
 )
 
 // ReadConfig :
@@ -34,7 +34,18 @@ func ReadConfig(environment string) error {
 	Config.SetConfigType("yaml")
 	Config.AddConfigPath("/etc/pepper/provider.d/device42")
 	if err := Config.ReadInConfig(); err != nil {
-		log.Die("%s", err)
+		log.Die("Can't open d42 config! %s", err)
 	}
+	// Username :
+	Username = Config.GetString("username")
+	// Password :
+	Password = Config.GetString("password")
+	address = Config.GetString("address")
+	// IPRange :
+	IPRange = Config.GetString("ip_range")
+	// ServiceLevel :
+	ServiceLevel = Config.GetString("service_level")
+	// BaseURL :
+	BaseURL = address + "/api/1.0"
 	return nil
 }

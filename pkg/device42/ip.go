@@ -25,7 +25,7 @@ func GetNextIP(subnet string) (string, error) {
 
 	paramData := params.Encode()
 
-	data, err := makeRequest(paramData, nextIPAddress, "POST")
+	data, err := makeRequest("POST", nextIPAddress, paramData)
 	if err != nil {
 		return "", err
 	}
@@ -53,7 +53,7 @@ func ReserveIP(ipaddress, device string) error {
 
 	paramData := params.Encode()
 
-	_, err := makeRequest(paramData, updateIPAddress, "POST")
+	_, err := makeRequest("POST", updateIPAddress, paramData)
 	if err != nil {
 		return err
 	}
@@ -68,7 +68,7 @@ func UpdateIP(name, ip string) error {
 
 	paramData := params.Encode()
 
-	_, err := makeRequest(paramData, updateIPAddress, "POST")
+	_, err := makeRequest("POST", updateIPAddress, paramData)
 	if err != nil {
 		return err
 	}
@@ -83,7 +83,7 @@ func MakeIPAvailable(ipaddress string) error {
 
 	paramData := params.Encode()
 
-	_, err := makeRequest(paramData, updateIPAddress, "POST")
+	_, err := makeRequest("POST", updateIPAddress, paramData)
 	if err != nil {
 		return err
 	}

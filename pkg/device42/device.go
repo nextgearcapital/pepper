@@ -9,6 +9,8 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/nextgearcapital/pepper/pkg/log"
 )
 
 // Device : Satisfy golint
@@ -22,7 +24,7 @@ var (
 	deleteDevice = BaseURL + "/devices/"
 )
 
-func makeRequest(verb, endpoint, data string) (io.ReadCloser, error) {
+func makeRequest(method, endpoint, data string) (io.ReadCloser, error) {
 	// This is only here temporarily until the binary is on the salt master with the proper certs
 	// Ignore SSL cert
 	transportConfig := &http.Transport{
@@ -33,13 +35,15 @@ func makeRequest(verb, endpoint, data string) (io.ReadCloser, error) {
 	var request *http.Request
 	var err error
 
-	if verb != "GET" {
-		request, err = http.NewRequest(verb, endpoint, strings.NewReader(data))
+	log.Info(BaseURL)
+
+	if method != "GET" {
+		request, err = http.NewRequest(method, endpoint, strings.NewReader(data))
 		if err != nil {
 			return nil, err
 		}
-	} else if verb == "GET" {
-		request, err = http.NewRequest(verb, endpoint, nil)
+	} else if method == "GET" {
+		request, err = http.NewRequest(method, endpoint, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -65,7 +69,7 @@ func CreateDevice(host string, servicelevel string) error {
 
 	paramData := params.Encode()
 
-	_, err := makeRequest(paramData, createDevice, "POST")
+	_, err := makeRequest("POST", createDevice, paramData)
 	if err != nil {
 		return err
 	}
@@ -81,7 +85,7 @@ func GetDevice(host string) (int, error) {
 
 	paramData := params.Encode()
 
-	data, err := makeRequest(paramData, getDeviceID, "GET")
+	data, err := makeRequest("GET", getDeviceID, paramData)
 	if err != nil {
 		return -1, err
 	}
@@ -113,7 +117,7 @@ func DeleteDevice(host string) error {
 
 	paramData := params.Encode()
 
-	_, err = makeRequest(paramData, deleteDevice, "DELETE")
+	_, err = makeRequest("DELETE", deleteDevice, paramData)
 	if err != nil {
 		return err
 	}
