@@ -11,7 +11,7 @@ import (
 
 // Provision :
 func Provision(profile string, host string) error {
-	saltCloud := exec.Command("salt-cloud", "-p", "-y", profile, host)
+	saltCloud := exec.Command("salt-cloud", "-y", "-p", profile, host)
 
 	log.Info("Executing: " + strings.Join(saltCloud.Args, " "))
 
@@ -27,7 +27,7 @@ func Provision(profile string, host string) error {
 
 // Destroy :
 func Destroy(host string) error {
-	saltCloud := exec.Command("salt-cloud", "-d", "-y", host)
+	saltCloud := exec.Command("salt-cloud", "-y", "-d", host)
 
 	log.Info("Executing: " + strings.Join(saltCloud.Args, " "))
 
