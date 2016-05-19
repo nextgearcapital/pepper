@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	updateCustomFields = BaseURL + "/device/custom_field/"
+	updateCustomFields = "/device/custom_field/"
 )
 
 // UpdateCustomFields : Satisfy golint

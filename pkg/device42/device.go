@@ -9,8 +9,6 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/nextgearcapital/pepper/pkg/log"
 )
 
 // Device : Satisfy golint
@@ -19,9 +17,9 @@ type Device struct {
 }
 
 var (
-	getDeviceID  = BaseURL + "/devices/name/"
-	createDevice = BaseURL + "/device/"
-	deleteDevice = BaseURL + "/devices/"
+	getDeviceID  = "/devices/name/"
+	createDevice = "/device/"
+	deleteDevice = "/devices/"
 )
 
 func makeRequest(method, endpoint, data string) (io.ReadCloser, error) {
@@ -35,15 +33,13 @@ func makeRequest(method, endpoint, data string) (io.ReadCloser, error) {
 	var request *http.Request
 	var err error
 
-	log.Info(BaseURL)
-
 	if method != "GET" {
-		request, err = http.NewRequest(method, endpoint, strings.NewReader(data))
+		request, err = http.NewRequest(method, BaseURL+endpoint, strings.NewReader(data))
 		if err != nil {
 			return nil, err
 		}
 	} else if method == "GET" {
-		request, err = http.NewRequest(method, endpoint, nil)
+		request, err = http.NewRequest(method, BaseURL+endpoint, nil)
 		if err != nil {
 			return nil, err
 		}

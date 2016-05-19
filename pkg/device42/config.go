@@ -47,5 +47,6 @@ func ReadConfig(environment string) error {
 	ServiceLevel = Config.GetString("service_level")
 	// BaseURL :
 	BaseURL = address + "/api/1.0"
+
 	return nil
 }

@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	updateIPAddress = BaseURL + "/ips/"
-	nextIPAddress   = BaseURL + "/suggest_ip/"
+	updateIPAddress = "/ips/"
+	nextIPAddress   = "/suggest_ip/"
 )
 
 // IPAddress :
