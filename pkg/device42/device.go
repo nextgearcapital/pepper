@@ -34,13 +34,13 @@ func makeRequest(method, endpoint, data string) (io.ReadCloser, error) {
 	var request *http.Request
 	var err error
 
-	if method != "GET" {
-		request, err = http.NewRequest(method, BaseURL+endpoint, strings.NewReader(data))
+	if method == "GET" {
+		request, err = http.NewRequest(method, BaseURL+endpoint, nil)
 		if err != nil {
 			return nil, err
 		}
-	} else if method == "GET" {
-		request, err = http.NewRequest(method, BaseURL+endpoint, nil)
+	} else {
+		request, err = http.NewRequest(method, BaseURL+endpoint, strings.NewReader(data))
 		if err != nil {
 			return nil, err
 		}
