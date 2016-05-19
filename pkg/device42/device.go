@@ -84,8 +84,9 @@ func CreateDevice(host string) error {
 	return nil
 }
 
-// GetDevice :
-func GetDevice(host string) (string, error) {
+// This only exists because you can't delete things by name
+// so we need to grab the ID by doing this
+func getDevice(host string) (string, error) {
 	var d Device
 
 	params := url.Values{}
@@ -113,7 +114,7 @@ func GetDevice(host string) (string, error) {
 
 // DeleteDevice :
 func DeleteDevice(host string) error {
-	id, err := GetDevice(host)
+	id, err := getDevice(host)
 	if err != nil {
 		return err
 	}
