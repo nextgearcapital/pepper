@@ -1,6 +1,7 @@
 package salt
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -10,7 +11,7 @@ import (
 
 // Provision :
 func Provision(profile string, host string) error {
-	saltCloud := exec.Command("salt-cloud", "-p", profile, host)
+	saltCloud := exec.Command("salt-cloud", "-p", "-y", profile, host)
 
 	log.Info("Executing: " + strings.Join(saltCloud.Args, " "))
 
@@ -26,12 +27,26 @@ func Provision(profile string, host string) error {
 
 // Destroy :
 func Destroy(host string) error {
-	saltCloud := exec.Command("salt-cloud", "-d", host)
+	saltCloud := exec.Command("salt-cloud", "-d", "-y", host)
 
 	log.Info("Executing: " + strings.Join(saltCloud.Args, " "))
 
 	saltCloud.Stdout = os.Stdout
 	saltCloud.Stderr = os.Stderr
+
+	var response int
+
+	fmt.Printf("Are you sure you want to destroy %s", host)
+
+	fmt.Scanf("%c", &response)
+	switch response {
+	default:
+		fmt.Println("Aborted!")
+	case 'y':
+		fmt.Println("Let's get this party started!")
+	case 'Y':
+		fmt.Println("Let's get this party started!")
+	}
 
 	err := saltCloud.Run()
 	if err != nil {

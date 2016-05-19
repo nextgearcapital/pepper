@@ -67,23 +67,23 @@ func (profile *ProfileConfig) Prepare(platform, environment, instancetype, templ
 	case "small":
 		profile.CPU = 1
 		profile.Memory = 2048
-		profile.DiskSize = 30
+		profile.DiskSize = 40
 	case "medium":
 		profile.CPU = 2
 		profile.Memory = 4096
-		profile.DiskSize = 40
+		profile.DiskSize = 60
 	case "large":
 		profile.CPU = 2
 		profile.Memory = 8192
-		profile.DiskSize = 60
+		profile.DiskSize = 80
 	case "xlarge":
 		profile.CPU = 4
 		profile.Memory = 16384
-		profile.DiskSize = 80
+		profile.DiskSize = 100
 	case "ultra":
 		profile.CPU = 8
 		profile.Memory = 32768
-		profile.DiskSize = 100
+		profile.DiskSize = 160
 	case "mega":
 		profile.CPU = 16
 		profile.Memory = 65536
@@ -164,7 +164,8 @@ const vsphereTemplate = `
   {{- end}}
   {{- if .DNSServers}}
   dns_servers:
-  {{range $value := .DNSServers}} - {{$value}}
+  {{- range $value := .DNSServers}}
+  - {{$value}}
   {{- end}}
   {{- end}}
   cluster: {{.Cluster}}
