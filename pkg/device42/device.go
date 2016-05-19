@@ -68,10 +68,10 @@ func CleanDeviceAndIP(host, ipAddress string) error {
 }
 
 // CreateDevice :
-func CreateDevice(host string, servicelevel string) error {
+func CreateDevice(host string) error {
 	params := url.Values{}
 	params.Add("name", host)
-	params.Add("service_level", servicelevel)
+	params.Add("service_level", ServiceLevel)
 	params.Add("type", "virtual")
 	params.Add("virtual_subtype", "vmware")
 

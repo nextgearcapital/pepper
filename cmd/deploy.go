@@ -78,7 +78,6 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 		hosts := args
 
 		var ipAddress string
-		var serviceLevel string
 
 		for _, host := range hosts {
 			if ipam != true {
@@ -92,7 +91,7 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 				}
 				ipAddress = newIP
 				// Create the Device
-				if err := device42.CreateDevice(host, serviceLevel); err != nil {
+				if err := device42.CreateDevice(host); err != nil {
 					if err = device42.DeleteDevice(host); err != nil {
 						log.Die("%s", err)
 					}
@@ -140,6 +139,7 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 			default:
 				log.Die("I don't recognize this platform!")
 			}
+			log.CleanExit("Success!")
 		}
 	},
 }
