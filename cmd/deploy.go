@@ -99,15 +99,15 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 					log.Die("%s", err)
 				}
 				// Reserve IP
-				if err := device42.ReserveIP(newIP, host); err != nil {
-					if err = device42.CleanDeviceAndIP(newIP, host); err != nil {
+				if err := device42.ReserveIP(ipAddress, host); err != nil {
+					if err = device42.CleanDeviceAndIP(ipAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
 				}
 				// Update custom fields
 				if err := device42.UpdateCustomFields(host, "roles", roles); err != nil {
-					if err = device42.CleanDeviceAndIP(newIP, host); err != nil {
+					if err = device42.CleanDeviceAndIP(ipAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
