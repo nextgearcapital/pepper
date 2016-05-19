@@ -8,7 +8,7 @@ var (
 	updateCustomFields = "/device/custom_field/"
 )
 
-// UpdateCustomFields : Satisfy golint
+// UpdateCustomFields :
 func UpdateCustomFields(host, key, value string) error {
 	params := url.Values{}
 	params.Add("name", host)

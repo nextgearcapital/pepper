@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-// Device : Satisfy golint
+// Device :
 type Device struct {
 	ID int `json:"id"`
 }
@@ -55,7 +55,18 @@ func makeRequest(method, endpoint, data string) (io.ReadCloser, error) {
 	return response.Body, nil
 }
 
-// CreateDevice : Satisfy golint
+// CleanDeviceAndIP :
+func CleanDeviceAndIP(host, ipAddress string) error {
+	if err := MakeIPAvailable(ipAddress); err != nil {
+		return err
+	}
+	if err := DeleteDevice(host); err != nil {
+		return err
+	}
+	return nil
+}
+
+// CreateDevice :
 func CreateDevice(host string, servicelevel string) error {
 	params := url.Values{}
 	params.Add("name", host)
@@ -72,7 +83,7 @@ func CreateDevice(host string, servicelevel string) error {
 	return nil
 }
 
-// GetDevice : Satisfy golint
+// GetDevice :
 func GetDevice(host string) (int, error) {
 	var d Device
 
@@ -99,7 +110,7 @@ func GetDevice(host string) (int, error) {
 	return d.ID, nil
 }
 
-// DeleteDevice : Satisfy golint
+// DeleteDevice :
 func DeleteDevice(host string) error {
 	id, err := GetDevice(host)
 	if err != nil {

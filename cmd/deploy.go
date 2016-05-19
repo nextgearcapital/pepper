@@ -100,20 +100,14 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 				}
 				// Reserve IP
 				if err := device42.ReserveIP(newIP, host); err != nil {
-					if err = device42.MakeIPAvailable(newIP); err != nil {
-						log.Die("%s", err)
-					}
-					if err = device42.DeleteDevice(host); err != nil {
+					if err = device42.CleanDeviceAndIP(newIP, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
 				}
 				// Update custom fields
 				if err := device42.UpdateCustomFields(host, "roles", roles); err != nil {
-					if err = device42.MakeIPAvailable(newIP); err != nil {
-						log.Die("%s", err)
-					}
-					if err = device42.DeleteDevice(host); err != nil {
+					if err = device42.CleanDeviceAndIP(newIP, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
@@ -123,28 +117,19 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 			case "vmware":
 				var vsphere vsphere.ProfileConfig
 				if err := vsphere.Prepare(platform, environment, instancetype, osTemplate, ipAddress); err != nil {
-					if err = device42.MakeIPAvailable(ipAddress); err != nil {
-						log.Die("%s", err)
-					}
-					if err = device42.DeleteDevice(host); err != nil {
+					if err = device42.CleanDeviceAndIP(ipAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
 				}
 				if err := vsphere.Generate(); err != nil {
-					if err = device42.MakeIPAvailable(ipAddress); err != nil {
-						log.Die("%s", err)
-					}
-					if err = device42.DeleteDevice(host); err != nil {
+					if err = device42.CleanDeviceAndIP(ipAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
 				}
 				if err := salt.Provision(profile, host); err != nil {
-					if err = device42.MakeIPAvailable(ipAddress); err != nil {
-						log.Die("%s", err)
-					}
-					if err = device42.DeleteDevice(host); err != nil {
+					if err = device42.CleanDeviceAndIP(ipAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
