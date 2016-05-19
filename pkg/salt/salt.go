@@ -17,9 +17,8 @@ func Provision(profile string, host string) error {
 	saltCloud.Stdout = os.Stdout
 	saltCloud.Stderr = os.Stderr
 
-	err := saltCloud.Run()
-	if err != nil {
-		log.Die("%s", err)
+	if err := saltCloud.Run(); err != nil {
+		return err
 	}
 	return nil
 }
@@ -33,9 +32,8 @@ func Destroy(host string) error {
 	saltCloud.Stdout = os.Stdout
 	saltCloud.Stderr = os.Stderr
 
-	err := saltCloud.Run()
-	if err != nil {
-		log.Die("%s", err)
+	if err := saltCloud.Run(); err != nil {
+		return err
 	}
 	return nil
 }

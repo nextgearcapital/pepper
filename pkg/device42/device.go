@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/nextgearcapital/pepper/pkg/log"
 )
 
 // Device :
@@ -120,7 +118,7 @@ func DeleteDevice(host string) error {
 	}
 
 	params := url.Values{}
-	params.Add("id", string(id))
+	params.Add("id", id)
 
 	paramData := params.Encode()
 
@@ -128,6 +126,5 @@ func DeleteDevice(host string) error {
 	if err != nil {
 		return err
 	}
-	log.Err(paramData)
 	return nil
 }

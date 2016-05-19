@@ -46,7 +46,7 @@ var (
 // Prepare :
 func (profile *ProfileConfig) Prepare(platform, environment, instancetype, template, ipAddress string) error {
 	if err := os.MkdirAll(configPath, 0644); err != nil {
-		log.Warn("%s", err)
+		return err
 	}
 
 	profile.Platform = platform
@@ -95,11 +95,12 @@ func (profile *ProfileConfig) Prepare(platform, environment, instancetype, templ
 	viper.AddConfigPath(configPath)
 
 	if err := viper.ReadInConfig(); err != nil {
-		log.Die("Couldn't read the config! Did you put it in /etc/pepper/config.d/vmware? %s", err)
+		log.Err("Couldn't read the config! Did you put it in /etc/pepper/config.d/vmware?")
+		return err
 	}
 
 	if err := viper.Unmarshal(profile); err != nil {
-		log.Die("%s", err)
+		return err
 	}
 	return nil
 }
@@ -108,17 +109,17 @@ func (profile *ProfileConfig) Prepare(platform, environment, instancetype, templ
 func (profile *ProfileConfig) Generate() error {
 	compiled, err := template.New("vsphere_profile").Parse(vsphereTemplate)
 	if err != nil {
-		log.Die("%s", err)
+		return err
 	}
 
 	profileName := profile.Platform + "-" + profile.Environment + "-" + profile.InstanceType + ".conf"
 	f, err := os.OpenFile(filepath.Join(saltProfiles, profileName), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
-		log.Die("%s", err)
+		return err
 	}
 
 	if err := compiled.Execute(f, profile); err != nil {
-		log.Die("%s", err)
+		return err
 	}
 	return nil
 }
@@ -127,7 +128,7 @@ func (profile *ProfileConfig) Generate() error {
 func (profile *ProfileConfig) Remove() error {
 	profilePath := saltProfiles + "/" + profile.Platform + "-" + profile.Environment + "-" + profile.InstanceType + ".conf"
 	if err := os.Remove(profilePath); err != nil {
-		log.Die("%s", err)
+		return err
 	}
 	return nil
 }

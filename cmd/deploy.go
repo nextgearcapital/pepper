@@ -134,7 +134,7 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 					log.Die("%s", err)
 				}
 				if err := vsphere.Remove(); err != nil {
-					log.Die("%s", err)
+					log.Err("%s", err)
 				}
 			default:
 				log.Die("I don't recognize this platform!")
