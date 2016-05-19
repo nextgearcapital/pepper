@@ -9,11 +9,13 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/nextgearcapital/pepper/pkg/log"
 )
 
 // Device :
 type Device struct {
-	ID int `json:"id"`
+	ID string `json:"id"`
 }
 
 var (
@@ -84,7 +86,7 @@ func CreateDevice(host string, servicelevel string) error {
 }
 
 // GetDevice :
-func GetDevice(host string) (int, error) {
+func GetDevice(host string) (string, error) {
 	var d Device
 
 	params := url.Values{}
@@ -94,17 +96,17 @@ func GetDevice(host string) (int, error) {
 
 	data, err := makeRequest("GET", getDeviceID, paramData)
 	if err != nil {
-		return -1, err
+		return "", err
 	}
 
 	readData, err := ioutil.ReadAll(data)
 	if err != nil {
-		return -1, err
+		return "", err
 	}
 
 	err = json.Unmarshal(readData, &d)
 	if err != nil {
-		return -1, err
+		return "", err
 	}
 
 	return d.ID, nil
@@ -117,10 +119,8 @@ func DeleteDevice(host string) error {
 		return err
 	}
 
-	realID := strconv.Itoa(id)
-
 	params := url.Values{}
-	params.Add("id", realID)
+	params.Add("id", string(id))
 
 	paramData := params.Encode()
 
@@ -128,5 +128,6 @@ func DeleteDevice(host string) error {
 	if err != nil {
 		return err
 	}
+	log.Err(paramData)
 	return nil
 }

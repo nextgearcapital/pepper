@@ -15,6 +15,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 
 	"github.com/nextgearcapital/pepper/pkg/device42"
@@ -45,6 +47,20 @@ $ pepper destroy web01 web02 web03`,
 
 		if len(hosts) == 0 {
 			log.Die("You didn't specify any hosts to destroy.")
+		}
+
+		var response int
+
+		fmt.Printf("Are you sure you want to destroy %s? [Y/n] ", hosts)
+
+		fmt.Scanf("%c", &response)
+		switch response {
+		default:
+			fmt.Println("Aborted!")
+		case 'y':
+			fmt.Println("Let's get this party started!")
+		case 'Y':
+			fmt.Println("Let's get this party started!")
 		}
 
 		for _, host := range hosts {

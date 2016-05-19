@@ -1,7 +1,6 @@
 package salt
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -33,20 +32,6 @@ func Destroy(host string) error {
 
 	saltCloud.Stdout = os.Stdout
 	saltCloud.Stderr = os.Stderr
-
-	var response int
-
-	fmt.Printf("Are you sure you want to destroy %s", host)
-
-	fmt.Scanf("%c", &response)
-	switch response {
-	default:
-		fmt.Println("Aborted!")
-	case 'y':
-		fmt.Println("Let's get this party started!")
-	case 'Y':
-		fmt.Println("Let's get this party started!")
-	}
 
 	err := saltCloud.Run()
 	if err != nil {
