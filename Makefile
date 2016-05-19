@@ -6,4 +6,4 @@ fmt:
 	go fmt `go list ./...`
 
 build:
-	gox -osarch="darwin/amd64"
+	gox -osarch="linux/amd64"
