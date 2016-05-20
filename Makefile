@@ -1,6 +1,9 @@
-.PHONY: all fmt build
+.PHONY: all fmt deps build
 
-all: fmt build
+all: fmt deps build
+
+deps:
+	go get ./...
 
 fmt:
 	go fmt `go list ./...`
