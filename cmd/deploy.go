@@ -121,19 +121,19 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 				vsphere.Datacenter = datacenter
 
 				if err := config.Prepare(); err != nil {
-					if err = device42.CleanDeviceAndIP(config.IPAddress, host); err != nil {
+					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
 				}
 				if err := config.Generate(); err != nil {
-					if err = device42.CleanDeviceAndIP(config.IPAddress, host); err != nil {
+					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
 				}
 				if err := salt.Provision(profile, host); err != nil {
-					if err = device42.CleanDeviceAndIP(config.IPAddress, host); err != nil {
+					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
