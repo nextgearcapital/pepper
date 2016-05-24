@@ -195,12 +195,12 @@ const vsphereTemplate = `
   deploy: False
   minion:
     grains:
-	  env: {{.Environment}}
-	  {{- if .Datacenter}}
-	  datacenter: {{.Datacenter}}
-	  {{- end}}
-	  {{- if .Role}}
-	  role: {{.Role}}
+      env: {{.Environment}}
+      {{- if .Datacenter}}
+      datacenter: {{.Datacenter}}
+      {{- end}}
+      {{- if .Role}}
+      role: {{.Role}}
       {{- end}}
   extra_config:
     cpu.hotadd: 'yes'
