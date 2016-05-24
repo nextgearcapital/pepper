@@ -13,7 +13,8 @@ import (
 
 var (
 	profile    string
-	roles      string
+	role       string
+	datacenter string
 	osTemplate string
 	ipam       bool
 )
@@ -22,10 +23,11 @@ func init() {
 	RootCmd.AddCommand(deployCmd)
 
 	deployCmd.Flags().StringVarP(&profile, "profile", "p", "", "Profile to generate and output to /etc/salt/cloud.profiles.d for salt-cloud to use")
-	deployCmd.Flags().StringVarP(&roles, "roles", "r", "", "List of roles to assign to the host in D42 [eg: dcos,dcos-master]")
-	deployCmd.Flags().StringVarP(&osTemplate, "template", "t", "", "Which OS template you want to use [eg: Ubuntu, CentOS, someothertemplatename]")
+	deployCmd.Flags().StringVarP(&role, "role", "r", "", "Role to assign to the host via grain [eg: kubernetes-master]")
+	deployCmd.Flags().StringVarP(&datacenter, "datacenter", "d", "", "Datacenter to assign to the host via grain [eg: us-east]")
+	deployCmd.Flags().StringVarP(&osTemplate, "template", "t", "", "Which OS template you want to use [eg: Ubuntu, CentOS, ubuntu_16.04]")
 	deployCmd.Flags().BoolVarP(&ipam, "no-ipam", "", false, "Whether or not to use Device42 IPAM [This is only used internally]")
-	deployCmd.Flags().BoolVarP(&log.IsDebugging, "debug", "d", false, "Turn debugging on")
+	deployCmd.Flags().BoolVarP(&log.IsDebugging, "debug", "", false, "Turn debugging on")
 }
 
 var deployCmd = &cobra.Command{
@@ -51,13 +53,17 @@ Provision new host web02 (CentOS) in the prd environment from the large profile 
 
 $ pepper deploy -p vmware-prd-large -t CentOS web02
 
-Provision new host web03 (Ubuntu) in the uat environment from the hyper profile using vmware as a provider:
+Provision new host web03 (Ubuntu) in the uat environment from the mega profile using vmware as a provider:
 
-$ pepper deploy -p vmware-uat-hyper -t Ubuntu web03
+$ pepper deploy -p vmware-uat-mega -t Ubuntu web03
 
-Are you getting this yet?
+Are we understanding how this works?
 
-$ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dcos03`,
+$ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master kubernetes01 kubernetes02 kubernetes03
+
+We can also define a role and datacenter via grains
+
+$ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kubernetes01 kubernetes02 kubernetes03`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if profile == "" {
 			log.Die("You didn't specify a profile.")
@@ -77,8 +83,6 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 		// Nothing really gained here it just makes the code more readable.
 		hosts := args
 
-		var ipAddress string
-
 		for _, host := range hosts {
 			if ipam != true {
 				if err := device42.ReadConfig(environment); err != nil {
@@ -89,7 +93,7 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 				if err != nil {
 					log.Die("%s", err)
 				}
-				ipAddress = newIP
+				vsphere.IPAddress = newIP
 				// Create the Device
 				if err := device42.CreateDevice(host); err != nil {
 					if err = device42.DeleteDevice(host); err != nil {
@@ -98,15 +102,15 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 					log.Die("%s", err)
 				}
 				// Reserve IP
-				if err := device42.ReserveIP(ipAddress, host); err != nil {
-					if err = device42.CleanDeviceAndIP(ipAddress, host); err != nil {
+				if err := device42.ReserveIP(vsphere.IPAddress, host); err != nil {
+					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
 				}
 				// Update custom fields
-				if err := device42.UpdateCustomFields(host, "roles", roles); err != nil {
-					if err = device42.CleanDeviceAndIP(ipAddress, host); err != nil {
+				if err := device42.UpdateCustomFields(host, "role", role); err != nil {
+					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
@@ -114,26 +118,34 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r dcos,dcos-master dcos01 dcos02 dc
 			}
 			switch platform {
 			case "vmware":
-				var vsphere vsphere.ProfileConfig
-				if err := vsphere.Prepare(platform, environment, instancetype, osTemplate, ipAddress); err != nil {
-					if err = device42.CleanDeviceAndIP(ipAddress, host); err != nil {
+				var config vsphere.ProfileConfig
+
+				vsphere.Platform = platform
+				vsphere.Environment = environment
+				vsphere.InstanceType = instancetype
+				vsphere.Template = osTemplate
+				vsphere.Role = role
+				vsphere.Datacenter = datacenter
+
+				if err := config.Prepare(); err != nil {
+					if err = device42.CleanDeviceAndIP(config.IPAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
 				}
-				if err := vsphere.Generate(); err != nil {
-					if err = device42.CleanDeviceAndIP(ipAddress, host); err != nil {
+				if err := config.Generate(); err != nil {
+					if err = device42.CleanDeviceAndIP(config.IPAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
 				}
 				if err := salt.Provision(profile, host); err != nil {
-					if err = device42.CleanDeviceAndIP(ipAddress, host); err != nil {
+					if err = device42.CleanDeviceAndIP(config.IPAddress, host); err != nil {
 						log.Die("%s", err)
 					}
 					log.Die("%s", err)
 				}
-				if err := vsphere.Remove(); err != nil {
+				if err := config.Remove(); err != nil {
 					log.Err("%s", err)
 				}
 			default:

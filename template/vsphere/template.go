@@ -19,6 +19,8 @@ type ProfileConfig struct {
 	Platform     string   `mapstructure:"platform"`
 	Environment  string   `mapstructure:"environment"`
 	InstanceType string   `mapstructure:"instance_type"`
+	Role         string   `mapstructure:"role"`
+	Datacenter   string   `mapstructure:"datacenter"`
 	Provider     string   `mapstructure:"provider"`
 	Template     string   `mapstructure:"template"`
 	CPU          int      `mapstructure:"cpu"`
@@ -43,19 +45,38 @@ var (
 	saltProfiles = "/etc/salt/cloud.profiles.d"
 )
 
+var (
+	// Platform :
+	Platform string
+	// Environment :
+	Environment string
+	// InstanceType :
+	InstanceType string
+	// Template :
+	Template string
+	// IPAddress :
+	IPAddress string
+	// Role :
+	Role string
+	// Datacenter :
+	Datacenter string
+)
+
 // Prepare :
-func (profile *ProfileConfig) Prepare(platform, environment, instancetype, template, ipAddress string) error {
+func (profile *ProfileConfig) Prepare() error {
 	if err := os.MkdirAll(configPath, 0644); err != nil {
 		return err
 	}
 
-	profile.Platform = platform
-	profile.Environment = environment
-	profile.InstanceType = instancetype
-	profile.Template = template
-	profile.IPAddress = ipAddress
+	profile.Platform = Platform
+	profile.Environment = Environment
+	profile.InstanceType = InstanceType
+	profile.Template = Template
+	profile.IPAddress = IPAddress
+	profile.Role = Role
+	profile.Datacenter = Datacenter
 
-	switch instancetype {
+	switch InstanceType {
 	case "nano":
 		profile.CPU = 1
 		profile.Memory = 512
@@ -90,7 +111,7 @@ func (profile *ProfileConfig) Prepare(platform, environment, instancetype, templ
 		profile.DiskSize = 200
 	}
 
-	viper.SetConfigName(environment)
+	viper.SetConfigName(Environment)
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(configPath)
 
@@ -175,6 +196,15 @@ const vsphereTemplate = `
   template: False
   power_on: True
   deploy: False
+  minion:
+    grains:
+	  env: {{.Environment}}
+	  {{- if .Datacenter}}
+	  datacenter: {{.Datacenter}}
+	  {{- end}}
+	  {{- if .Role}}
+	  role: {{.Role}}
+      {{- end}}
   extra_config:
     cpu.hotadd: 'yes'
     mem.hotadd: 'yes'
