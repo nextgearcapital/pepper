@@ -170,11 +170,11 @@ const vsphereTemplate = `
         name: {{.Network}}
         adapter_type: vmxnet3
         switch_type: distributed
-		{{- if eq .DHCP false}}
+        {{- if eq .DHCP false}}
         ip: {{.IPAddress}}
         gateway: {{.Gateway}}
         subnet_mask: {{.Subnet}}
-	    {{- end}}
+        {{- end}}
     scsi:
       SCSI controller 0:
         type: lsilogic
@@ -205,8 +205,8 @@ const vsphereTemplate = `
   extra_config:
     cpu.hotadd: 'yes'
     mem.hotadd: 'yes'
-	{{- if .IsCoreOS}}
-	guestinfo.coreos.config.data: {{.ConfigData}}
-	guestinfo.coreos.config.data.encoding: base64
-	{{- end}}
+    {{- if .IsCoreOS}}
+    guestinfo.coreos.config.data: {{.ConfigData}}
+    guestinfo.coreos.config.data.encoding: base64
+    {{- end}}
 `
