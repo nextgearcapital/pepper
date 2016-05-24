@@ -145,15 +145,6 @@ func (profile *ProfileConfig) Generate() error {
 	return nil
 }
 
-// Remove :
-func (profile *ProfileConfig) Remove() error {
-	profilePath := saltProfiles + "/" + profile.Platform + "-" + profile.Environment + "-" + profile.InstanceType + ".conf"
-	if err := os.Remove(profilePath); err != nil {
-		return err
-	}
-	return nil
-}
-
 const vsphereTemplate = `
 {{- .Platform}}-{{.Environment}}-{{.InstanceType}}:
   provider: {{.Provider}}

@@ -138,9 +138,6 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 					}
 					log.Die("%s", err)
 				}
-				if err := config.Remove(); err != nil {
-					log.Err("%s", err)
-				}
 			default:
 				log.Die("I don't recognize this platform!")
 			}
