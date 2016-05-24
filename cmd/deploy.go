@@ -16,6 +16,9 @@ var (
 	role       string
 	datacenter string
 	osTemplate string
+	cpu        int
+	memory     int
+	disksize   int
 	ipam       bool
 )
 
@@ -27,6 +30,9 @@ func init() {
 	deployCmd.Flags().StringVarP(&datacenter, "datacenter", "d", "", "Datacenter to assign to the host via grain [eg: us-east]")
 	deployCmd.Flags().StringVarP(&osTemplate, "template", "t", "", "Which OS template you want to use [eg: Ubuntu, CentOS, ubuntu_16.04]")
 	deployCmd.Flags().BoolVarP(&ipam, "no-ipam", "", false, "Whether or not to use Device42 IPAM [This is only used internally]")
+	deployCmd.Flags().StringVarP(&cpu, "cpu", "", "", "CPU to assign to the host [eg: 1]")
+	deployCmd.Flags().StringVarP(&memory, "memory", "", "", "Memory to assign to the host [eg: 32]")
+	deployCmd.Flags().StringVarP(&disksize, "disksize", "", "", "DiskSize to assign to the host [eg: 200]")
 	deployCmd.Flags().BoolVarP(&log.IsDebugging, "debug", "", false, "Turn debugging on")
 }
 
@@ -126,6 +132,11 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 					}
 					log.Die("%s", err)
 				}
+
+				vsphere.CPU = cpu
+				vsphere.Memory = memory
+				vsphere.DiskSize = disksize
+
 				if err := config.Generate(); err != nil {
 					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
 						log.Die("%s", err)
