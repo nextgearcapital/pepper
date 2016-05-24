@@ -108,13 +108,6 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 					}
 					log.Die("%s", err)
 				}
-				// Update custom fields
-				if err := device42.UpdateCustomFields(host, "role", role); err != nil {
-					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
-						log.Die("%s", err)
-					}
-					log.Die("%s", err)
-				}
 			}
 			switch platform {
 			case "vmware":
