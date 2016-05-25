@@ -156,7 +156,7 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 			default:
 				log.Die("I don't recognize this platform!")
 			}
-			log.CleanExit("Success!")
 		}
+		log.CleanExit("Success!")
 	},
 }
