@@ -60,12 +60,6 @@ var (
 	Role string
 	// Datacenter :
 	Datacenter string
-	// CPU :
-	CPU int
-	// Memory :
-	Memory int
-	// DiskSize :
-	DiskSize int
 )
 
 // Prepare :

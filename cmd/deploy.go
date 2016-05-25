@@ -134,11 +134,11 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 				}
 
 				if cpu > 0 {
-					vsphere.CPU = cpu
+					config.CPU = cpu
 				} else if memory > 0 {
-					vsphere.Memory = memory
+					config.Memory = memory
 				} else if disksize > 0 {
-					vsphere.DiskSize = disksize
+					config.DiskSize = disksize
 				}
 
 				if err := config.Generate(); err != nil {
