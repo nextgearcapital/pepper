@@ -13,7 +13,7 @@ import (
 
 var (
 	profile    string
-	role       string
+	roles      string
 	datacenter string
 	osTemplate string
 	cpu        int
@@ -26,7 +26,7 @@ func init() {
 	RootCmd.AddCommand(deployCmd)
 
 	deployCmd.Flags().StringVarP(&profile, "profile", "p", "", "Profile to generate and output to /etc/salt/cloud.profiles.d for salt-cloud to use")
-	deployCmd.Flags().StringVarP(&role, "role", "r", "", "Role to assign to the host via grain [eg: kubernetes-master]")
+	deployCmd.Flags().StringVarP(&roles, "roles", "r", "", "roles to assign to the host via grain and d42 [eg: kubernetes-master]")
 	deployCmd.Flags().StringVarP(&datacenter, "datacenter", "d", "", "Datacenter to assign to the host via grain [eg: us-east]")
 	deployCmd.Flags().StringVarP(&osTemplate, "template", "t", "", "Which OS template you want to use [eg: Ubuntu, CentOS, ubuntu_16.04]")
 	deployCmd.Flags().BoolVarP(&ipam, "no-ipam", "", false, "Whether or not to use Device42 IPAM [This is only used internally]")
@@ -67,7 +67,7 @@ Are we understanding how this works?
 
 $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master kubernetes01 kubernetes02 kubernetes03
 
-We can also define a role and datacenter via grains
+We can also define a roles and datacenter via grains
 
 $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kubernetes01 kubernetes02 kubernetes03`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -114,6 +114,13 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 					}
 					log.Die("%s", err)
 				}
+				// Update custom fields
+				if err := device42.UpdateCustomFields(host, "roles", roles); err != nil {
+					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
+						log.Die("%s", err)
+					}
+					log.Die("%s", err)
+				}
 			}
 			switch platform {
 			case "vmware":
@@ -123,7 +130,7 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 				vsphere.Environment = environment
 				vsphere.InstanceType = instancetype
 				vsphere.Template = osTemplate
-				vsphere.Role = role
+				vsphere.Role = roles
 				vsphere.Datacenter = datacenter
 
 				if err := config.Prepare(); err != nil {
