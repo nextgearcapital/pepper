@@ -24,7 +24,7 @@ type ProfileConfig struct {
 	Provider     string   `mapstructure:"provider"`
 	Template     string   `mapstructure:"template"`
 	CPU          int      `mapstructure:"cpu"`
-	Memory       int      `mapstructure:"memory"`
+	Memory       float64  `mapstructure:"memory"`
 	DiskSize     int      `mapstructure:"disksize"`
 	DHCP         bool     `mapstructure:"dhcp"`
 	Network      string   `mapstructure:"network"`
@@ -79,35 +79,35 @@ func (profile *ProfileConfig) Prepare() error {
 	switch InstanceType {
 	case "nano":
 		profile.CPU = 1
-		profile.Memory = 512
+		profile.Memory = 0.5
 		profile.DiskSize = 20
 	case "micro":
 		profile.CPU = 1
-		profile.Memory = 1024
+		profile.Memory = 1
 		profile.DiskSize = 20
 	case "small":
 		profile.CPU = 1
-		profile.Memory = 2048
+		profile.Memory = 2
 		profile.DiskSize = 40
 	case "medium":
 		profile.CPU = 2
-		profile.Memory = 4096
+		profile.Memory = 4
 		profile.DiskSize = 60
 	case "large":
 		profile.CPU = 2
-		profile.Memory = 8192
+		profile.Memory = 8
 		profile.DiskSize = 80
 	case "xlarge":
 		profile.CPU = 4
-		profile.Memory = 16384
+		profile.Memory = 16
 		profile.DiskSize = 100
 	case "ultra":
 		profile.CPU = 8
-		profile.Memory = 32768
+		profile.Memory = 32
 		profile.DiskSize = 160
 	case "mega":
 		profile.CPU = 16
-		profile.Memory = 65536
+		profile.Memory = 64
 		profile.DiskSize = 200
 	}
 
@@ -150,7 +150,7 @@ const vsphereTemplate = `
   provider: {{.Provider}}
   clonefrom: {{.Template}}
   num_cpus: {{.CPU}}
-  memory: {{.Memory}}
+  memory: {{.Memory}}GB
   devices:
     cd:
       CD/DVD drive 1:

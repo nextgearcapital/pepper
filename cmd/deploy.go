@@ -17,7 +17,7 @@ var (
 	datacenter string
 	osTemplate string
 	cpu        int
-	memory     int
+	memory     float64
 	disksize   int
 	ipam       bool
 )
@@ -31,7 +31,7 @@ func init() {
 	deployCmd.Flags().StringVarP(&osTemplate, "template", "t", "", "Which OS template you want to use [eg: Ubuntu, CentOS, ubuntu_16.04]")
 	deployCmd.Flags().BoolVarP(&ipam, "no-ipam", "", false, "Whether or not to use Device42 IPAM [This is only used internally]")
 	deployCmd.Flags().IntVarP(&cpu, "cpu", "", 0, "CPU to assign to the host [eg: 1]")
-	deployCmd.Flags().IntVarP(&memory, "memory", "", 0, "Memory to assign to the host [eg: 32]")
+	deployCmd.Flags().Float64VarP(&memory, "memory", "", 0, "Memory to assign to the host [eg: 32]")
 	deployCmd.Flags().IntVarP(&disksize, "disksize", "", 0, "DiskSize to assign to the host [eg: 200]")
 	deployCmd.Flags().BoolVarP(&log.IsDebugging, "debug", "", false, "Turn debugging on")
 }
