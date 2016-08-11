@@ -1,39 +1,59 @@
-Pepper
-===
-[![GoDoc](https://godoc.org/github.com/nextgearcapital/pepper?status.svg)](https://godoc.org/github.com/nextgearcapital/pepper)
-[![Build Status](https://travis-ci.org/nextgearcapital/pepper.svg?branch=master)](https://travis-ci.org/nextgearcapital/pepper)
+# Pepper
 
-VMware vSphere:
+Pepper is a wrapper around salt-cloud and device42 for a more convenient way of deploying your infrastructure.
 
-    case "nano":
-		CPU = 1
-		Memory = 512
-		DiskSize = 20
-    case "micro":
-		CPU = 1
-		Memory = 1024
-		DiskSize = 20
-    case "small":
-		CPU = 1
-		Memory = 2048
-		DiskSize = 40
-	case "medium":
-		CPU = 2
-		Memory = 4096
-		DiskSize = 60
-	case "large":
-		CPU = 2
-		Memory = 8192
-		DiskSize = 80
-	case "xlarge":
-		CPU = 4
-		Memory = 16384
-		DiskSize = 100
-	case "ultra":
-		CPU = 8
-		Memory = 32768
-		DiskSize = 160
-	case "mega":
-		CPU = 16
-		Memory = 65536
-		DiskSize = 200
+### How to install locally
+
+Requirements:
+* python 3.4 or above
+* pip
+* virtualenv
+
+Make sure you have Python 3.4 or above installed. Get it from Homebrew:
+
+```sh
+$ brew install python3
+```
+
+You can install pip like this:
+
+```sh
+$ curl -L https://bootstrap.pypa.io/get-pip.py | sudo -H python3
+```
+
+Then you need virtualenv. You can install virtualenv like this:
+
+```sh
+$ pip3 install virtualenv
+```
+
+Clone this repo:
+
+```sh
+$ git clone https://github.com/nextgearcapital/pepper
+```
+
+cd to the pepper repo and get a virtualenv started:
+
+```sh
+$ virtualenv venv
+```
+
+Activate your virtualenv:
+
+```sh
+$ . venv/bin/activate
+```
+
+Install pepper locally:
+
+```sh
+$ pip install --editable .
+```
+
+If you're done with the environment, you can do this in the root of the repo:
+
+```sh
+$ deactivate
+$ make clean
+```

@@ -1,18 +1,7 @@
-.PHONY: all fmt deps test build
+clean:
+	find . -type d -name "__pycache__" | xargs rm -rf
+	find . -name "*.egg-info" | xargs rm -rf
+	find . -name "*.pyc" | xargs rm -rf
+	rm -rf venv
 
-all: fmt deps test build
-
-fmt:
-	go fmt `go list ./...`
-
-deps:
-	go get github.com/mitchellh/gox
-	go get -t -v ./...
-
-test:
-	go get -t -v ./...
-	go tool vet .
-	go test -v -race ./...
-
-build: deps
-	gox -osarch="linux/amd64"
+.PHONY: clean

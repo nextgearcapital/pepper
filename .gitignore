@@ -1,2 +1,4 @@
-pepper
-pepper_linux_amd64
+*.pyc
+*.egg-info
+__pycache__
+venv
