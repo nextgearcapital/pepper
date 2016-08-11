@@ -1,9 +1,6 @@
-# pepper
+# Pepper
 
-A CLI for the datacenter!
-
-This is super alpha software. The goal with pepper is to be a one-stop shop for accessing anything we deal with
-from a provisioning perspective.
+Pepper is a wrapper around salt-cloud and device42 for a more convenient way of deploying your infrastructure.
 
 ### How to install locally
 
