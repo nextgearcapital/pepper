@@ -11,8 +11,8 @@ def provision():
 @provision.command()
 @click.option("--name", required=True,
               help="The server's hostname.")
-@click.option("--location", required=True,
-              help="The location of the server.")
+@click.option("--template", required=True,
+              help="The template (OS) you want to use.")
 @click.pass_obj
 def virtual(config, name, location):
     """Provisions a virtual server."""
