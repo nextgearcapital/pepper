@@ -8,7 +8,7 @@ log = logging.getLogger(__name__)
 
 @pepper.command()
 def init():
-
+    """Initializes pepper configs."""
     if not os.path.exists("/etc/pepper"):
         log.warning(
             "/etc/pepper doesn't exist so your config most likely doesn't exist either.\n")

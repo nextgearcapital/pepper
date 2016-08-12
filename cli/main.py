@@ -3,6 +3,8 @@
 
 import cli.device42
 import cli.salt
+import cli.provision
+import config
 
 from cli.pepper import pepper
 
