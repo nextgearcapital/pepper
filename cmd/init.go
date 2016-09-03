@@ -55,6 +55,8 @@ var initCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(initCmd)
+
+	RootCmd.GenBashCompletionFile("/etc/bash_completion.d/pepper")
 }
 
 const configTemplate = `

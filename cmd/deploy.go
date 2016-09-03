@@ -33,6 +33,9 @@ func init() {
 	deployCmd.Flags().IntVarP(&cpu, "cpu", "", 0, "CPU to assign to the host [eg: 1]")
 	deployCmd.Flags().Float64VarP(&memory, "memory", "", 0, "Memory to assign to the host [eg: 32]")
 	deployCmd.Flags().IntVarP(&disksize, "disksize", "", 0, "DiskSize to assign to the host [eg: 200]")
+
+	deployCmd.MarkFlagRequired("profile")
+	deployCmd.MarkFlagRequired("template")
 }
 
 var deployCmd = &cobra.Command{
