@@ -29,11 +29,11 @@ var initCmd = &cobra.Command{
 	Long:  `Creates the necessary directories and generates a basic profile config in /etc/pepper/config.d as a starting point.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := os.MkdirAll("/etc/pepper/config.d", 0644); err != nil {
-			logrus.Warnf("couldn't create /etc/pepper/config.d/ directory: %v", err)
+			logrus.Fatalf("couldn't create /etc/pepper/config.d/ directory: %v", err)
 		}
 		logrus.Info("Created /etc/pepper/config.d")
 		if err := os.MkdirAll("/etc/pepper/provider.d", 0644); err != nil {
-			logrus.Warnf("couldn't create /etc/pepper/provider.d/ directory: %v", err)
+			logrus.Fatalf("couldn't create /etc/pepper/provider.d/ directory: %v", err)
 		}
 		logrus.Info("Created /etc/pepper/provider.d")
 
