@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/nextgearcapital/pepper/pkg/log"
+	"github.com/Sirupsen/logrus"
 
 	"github.com/spf13/cobra"
 )
@@ -16,6 +16,6 @@ var RootCmd = &cobra.Command{
 // Execute :
 func Execute() {
 	if err := RootCmd.Execute(); err != nil {
-		log.Die("Error: %s", err)
+		logrus.Fatalf("Error: %s", err)
 	}
 }

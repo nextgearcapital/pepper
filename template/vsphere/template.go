@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/nextgearcapital/pepper/pkg/log"
+	"github.com/Sirupsen/logrus"
 
 	"github.com/spf13/viper"
 )
@@ -116,7 +116,7 @@ func (profile *ProfileConfig) Prepare() error {
 	viper.AddConfigPath(configPath)
 
 	if err := viper.ReadInConfig(); err != nil {
-		log.Err("Couldn't read the config! Did you put it in /etc/pepper/config.d/vmware?")
+		logrus.Warn("Couldn't read the config! Did you put it in /etc/pepper/config.d/vmware?")
 		return err
 	}
 

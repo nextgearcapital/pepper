@@ -18,7 +18,7 @@ import (
 	"os"
 	"text/template"
 
-	"github.com/nextgearcapital/pepper/pkg/log"
+	"github.com/Sirupsen/logrus"
 
 	"github.com/spf13/cobra"
 )
@@ -29,26 +29,26 @@ var initCmd = &cobra.Command{
 	Long:  `Creates the necessary directories and generates a basic profile config in /etc/pepper/config.d as a starting point.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := os.MkdirAll("/etc/pepper/config.d", 0644); err != nil {
-			log.Warn("%s", err)
+			logrus.Warnf("%s", err)
 		}
-		log.Info("Created /etc/pepper/config.d")
+		logrus.Info("Created /etc/pepper/config.d")
 		if err := os.MkdirAll("/etc/pepper/provider.d", 0644); err != nil {
-			log.Warn("%s", err)
+			logrus.Warnf("%s", err)
 		}
-		log.Info("Created /etc/pepper/provider.d")
+		logrus.Info("Created /etc/pepper/provider.d")
 
 		compiled, err := template.New("vsphere_profile").Parse(configTemplate)
 		if err != nil {
-			log.Die("%s", err)
+			logrus.Fatalf("%s", err)
 		}
 
 		f, err := os.OpenFile("/etc/pepper/config.d/template.yaml", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
-			log.Die("%s", err)
+			logrus.Fatalf("%s", err)
 		}
 
 		if err := compiled.Execute(f, nil); err != nil {
-			log.Die("%s", err)
+			logrus.Fatalf("%s", err)
 		}
 	},
 }
