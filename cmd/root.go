@@ -16,6 +16,6 @@ var RootCmd = &cobra.Command{
 // Execute :
 func Execute() {
 	if err := RootCmd.Execute(); err != nil {
-		logrus.Fatalf("Error: %v", err)
+		logrus.Fatalf("couldn't execute pepper cmd: %v", err)
 	}
 }

@@ -28,13 +28,13 @@ var (
 // ReadConfig :
 func ReadConfig(environment string) error {
 	if err := os.MkdirAll("/etc/pepper/provider.d/device42", 0644); err != nil {
-		logrus.Warnf("%v", err)
+		logrus.Warnf("unable to create the /etc/pepper/provider.d/device42/ directory: %v", err)
 	}
 	Config.SetConfigName(environment)
 	Config.SetConfigType("yaml")
 	Config.AddConfigPath("/etc/pepper/provider.d/device42")
 	if err := Config.ReadInConfig(); err != nil {
-		logrus.Fatalf("Can't open d42 config! %v", err)
+		logrus.Fatalf("unable to open device42 config: %v", err)
 	}
 	// Username :
 	Username = Config.GetString("username")

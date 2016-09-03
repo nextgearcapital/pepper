@@ -59,7 +59,7 @@ $ pepper destroy web01 web02 web03`,
 		if strings.EqualFold(string(response), "y") == true {
 			err := destroy(hosts)
 			if err != nil {
-				logrus.Fatalf("%v", err)
+				logrus.Fatalf("couldn't destroy host(s): %v", err)
 			}
 		} else {
 			logrus.Fatal("Aborted!")

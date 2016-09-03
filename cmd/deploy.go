@@ -91,34 +91,34 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 		for _, host := range hosts {
 			if ipam != true {
 				if err := device42.ReadConfig(environment); err != nil {
-					logrus.Fatalf("%v", err)
+					logrus.Fatalf("can't read device42 config: %v", err)
 				}
 				// Get a new IP
 				newIP, err := device42.GetNextIP(device42.IPRange)
 				if err != nil {
-					logrus.Fatalf("%v", err)
+					logrus.Fatalf("unable to retrieve next IP from device42: %v", err)
 				}
 				vsphere.IPAddress = newIP
 				// Create the Device
 				if err := device42.CreateDevice(host); err != nil {
 					if err = device42.DeleteDevice(host); err != nil {
-						logrus.Fatalf("%v", err)
+						logrus.Warnf("unable to delete device from device42: %v", err)
 					}
-					logrus.Fatalf("%v", err)
+					logrus.Fatalf("unable to create device in device42: %v", err)
 				}
 				// Reserve IP
 				if err := device42.ReserveIP(vsphere.IPAddress, host); err != nil {
 					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
-						logrus.Fatalf("%v", err)
+						logrus.Warnf("unable to delete device or remove the device association from the IP in device42: %v", err)
 					}
-					logrus.Fatalf("%v", err)
+					logrus.Fatalf("unable to reserve an IP in device42: %v", err)
 				}
 				// Update custom fields
 				if err := device42.UpdateCustomFields(host, "roles", roles); err != nil {
 					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
-						logrus.Fatalf("%v", err)
+						logrus.Warnf("unable to delete device or remove the device association from the IP in device42: %v", err)
 					}
-					logrus.Fatalf("%v", err)
+					logrus.Fatalf("unable to update custom fields in device42 (i.e. roles): %v", err)
 				}
 			}
 			switch platform {
@@ -134,9 +134,9 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 
 				if err := config.Prepare(); err != nil {
 					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
-						logrus.Fatalf("%v", err)
+						logrus.Warnf("unable to delete device or remove the device association from the IP in device42: %v", err)
 					}
-					logrus.Fatalf("%v", err)
+					logrus.Fatalf("unable to read the vmware environment file: %v", err)
 				}
 
 				if cpu > 0 {
@@ -149,15 +149,15 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 
 				if err := config.Generate(); err != nil {
 					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
-						logrus.Fatalf("%v", err)
+						logrus.Warnf("unable to delete device or remove the device association from the IP in device42: %v", err)
 					}
-					logrus.Fatalf("%v", err)
+					logrus.Fatalf("unable to generate the vmware profile from template: %v", err)
 				}
 				if err := salt.Provision(profile, host); err != nil {
 					if err = device42.CleanDeviceAndIP(vsphere.IPAddress, host); err != nil {
-						logrus.Fatalf("%v", err)
+						logrus.Warnf("unable to delete device or remove the device association from the IP in device42: %v", err)
 					}
-					logrus.Fatalf("%v", err)
+					logrus.Fatalf("unable to provision the vmware host with salt-cloud: %v", err)
 				}
 			default:
 				logrus.Fatalf("I don't recognize this platform!")
