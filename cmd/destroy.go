@@ -20,8 +20,8 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/Sirupsen/logrus"
 	"github.com/nextgearcapital/pepper/pkg/device42"
-	"github.com/nextgearcapital/pepper/pkg/log"
 	"github.com/nextgearcapital/pepper/pkg/salt"
 )
 
@@ -47,7 +47,7 @@ $ pepper destroy web01 web02 web03`,
 		hosts := args
 
 		if len(hosts) == 0 {
-			log.Die("You didn't specify any hosts to destroy.")
+			logrus.Fatal("You didn't specify any hosts to destroy.")
 		}
 
 		var response int
@@ -59,13 +59,13 @@ $ pepper destroy web01 web02 web03`,
 		if strings.EqualFold(string(response), "y") == true {
 			err := destroy(hosts)
 			if err != nil {
-				log.Die("%s", err)
+				logrus.Fatalf("couldn't destroy host(s): %v", err)
 			}
 		} else {
-			log.Die("Aborted!")
+			logrus.Fatal("Aborted!")
 		}
 
-		log.CleanExit("Success!")
+		logrus.Info("Success!")
 	},
 }
 
