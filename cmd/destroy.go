@@ -16,6 +16,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 
@@ -32,7 +33,7 @@ var destroyCmd = &cobra.Command{
 	Use:   "destroy",
 	Short: "Destroys VM's",
 	Long: `This command will call salt-cloud with the -d parameter.
-	Multiple VM's can be specified for destruction. For example:
+    Multiple VM's can be specified for destruction. For example:
 
 You can destroy a single VM:
 
@@ -54,25 +55,30 @@ $ pepper destroy web01 web02 web03`,
 		fmt.Printf("Are you sure you want to destroy %s? [Y/n] ", hosts)
 
 		fmt.Scanf("%c", &response)
-		switch response {
-		default:
-			fmt.Println("Aborted!")
-		case 'y':
-			fmt.Println("Let's get this party started!")
-		case 'Y':
-			fmt.Println("Let's get this party started!")
-		}
 
-		for _, host := range hosts {
-			if err := salt.Destroy(host); err != nil {
+		if strings.EqualFold(string(response), "y") == true {
+			err := destroy(hosts)
+			if err != nil {
 				log.Die("%s", err)
 			}
-			if ipam == true {
-				if err := device42.DeleteDevice(host); err != nil {
-					log.Warn("%s", err)
-				}
-			}
+		} else {
+			log.Die("Aborted!")
 		}
+
 		log.CleanExit("Success!")
 	},
+}
+
+func destroy(hosts []string) error {
+	for _, host := range hosts {
+		if err := salt.Destroy(host); err != nil {
+			return err
+		}
+		if ipam == true {
+			if err := device42.DeleteDevice(host); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
