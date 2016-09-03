@@ -29,26 +29,26 @@ var initCmd = &cobra.Command{
 	Long:  `Creates the necessary directories and generates a basic profile config in /etc/pepper/config.d as a starting point.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := os.MkdirAll("/etc/pepper/config.d", 0644); err != nil {
-			logrus.Warnf("%s", err)
+			logrus.Warnf("%v", err)
 		}
 		logrus.Info("Created /etc/pepper/config.d")
 		if err := os.MkdirAll("/etc/pepper/provider.d", 0644); err != nil {
-			logrus.Warnf("%s", err)
+			logrus.Warnf("%v", err)
 		}
 		logrus.Info("Created /etc/pepper/provider.d")
 
 		compiled, err := template.New("vsphere_profile").Parse(configTemplate)
 		if err != nil {
-			logrus.Fatalf("%s", err)
+			logrus.Fatalf("%v", err)
 		}
 
 		f, err := os.OpenFile("/etc/pepper/config.d/template.yaml", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
-			logrus.Fatalf("%s", err)
+			logrus.Fatalf("%v", err)
 		}
 
 		if err := compiled.Execute(f, nil); err != nil {
-			logrus.Fatalf("%s", err)
+			logrus.Fatalf("%v", err)
 		}
 	},
 }
