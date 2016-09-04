@@ -6,7 +6,7 @@ matrix:
   - go: 1.7
   - go: tip
 script:
-- make test
+- make
 deploy:
   provider: releases
   file: pepper_linux_amd64
