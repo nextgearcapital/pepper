@@ -7,10 +7,3 @@ matrix:
   - go: tip
 script:
 - make
-deploy:
-  provider: releases
-  api_key: B7R+sBtojh7FECSI5wEAexqIzyWA/y+Gapp62GCVWTG4HLYzv5/TUKHdT2IkE2tXW6vbMN5ykqE8vbNevCsdpzUCPV3NggiyNBJkoyANlyA5AZGKzTlgKt/ATMG7OxXQS6XI7AS5HWwg2G1KSEWwD6bHueOYK4KbMscUbiB60HjHh4vCc5bhAzutZ5JK10KR+Fw5FP9XKDkPmoLBRJjzI2EXCpWotDsKgiVLvluFXldUS8cnEkgoC1GjvOCTJ92ZYyHhQhczu0+bC141fv8H1hG7QM2zswuVAxmkI71740UczvgUXqNKZQw7fT+Do+xuD7C12fkkpH08SLZxZAVkWcZXW4OSknPBtXrsF6J13HibAWn0eYpy6HNy3V+WH/F3Mr5MBEVjlRFAyf+WEUf8g7enOGwfIfnvWdz+UwH+RfSjl07pW7NGcXMQxvVPZ7M7K4+LSI+Fq0Z2M9BF3Xkxp5/5Z26Ot1SkbRw0AMZVyOXatMu9fm4C+qwzaeF1MSdu9Ko02tHTc+H36SEZLdsZXFDT50X3TsGJGSU8ZRKMXeOQA46ZW8Y7Udfzuhl3cLjc9ZAxeF1wurrGpktniidmoJOq2P05MIVk6Wu7Bd3mzWmPxyfuuJ3cDcLbrph7PPK1JGDJufL3Vn/7UCtTCkVWQMvR8OBpCYrFn4JNI08tzDk=
-  file: pepper_linux_amd64
-  skip_cleanup: true
-  on:
-    tags: true
