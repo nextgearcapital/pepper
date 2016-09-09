@@ -7,3 +7,11 @@ matrix:
   - go: tip
 script:
 - make
+deploy:
+    provider: releases
+    api_key:
+        secure: "$GH_TOKEN"
+    file: pepper_linux_amd64
+    skip_cleanup: true
+    on:
+        tags: true
