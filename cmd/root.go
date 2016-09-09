@@ -6,11 +6,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var rootArgs = []string{"init", "deploy", "destroy"}
+
 // RootCmd :
 var RootCmd = &cobra.Command{
-	Use:   "pepper",
-	Short: "Wrapper around salt-cloud",
-	Long:  `pepper is a wrapper around salt-cloud that will generate salt-cloud profiles and cloud-init configs (for CoreOS)`,
+	Use:       "pepper",
+	Short:     "Wrapper around salt-cloud",
+	Long:      `pepper is a wrapper around salt-cloud that will generate salt-cloud profiles and cloud-init configs (for CoreOS)`,
+	ValidArgs: rootArgs,
 }
 
 // Execute :
