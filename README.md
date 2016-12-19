@@ -3,6 +3,10 @@ Pepper
 [![GoDoc](https://godoc.org/github.com/nextgearcapital/pepper?status.svg)](https://godoc.org/github.com/nextgearcapital/pepper)
 [![Build Status](https://travis-ci.org/nextgearcapital/pepper.svg?branch=master)](https://travis-ci.org/nextgearcapital/pepper)
 
+Most of the code here is not very good. There was a desperate need for this at the time
+so we needed to work very quickly. I plan on refactoring all of this at some point and
+adding tests.
+
 VMware vSphere:
 
     case "nano":
