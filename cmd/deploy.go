@@ -144,9 +144,11 @@ $ pepper deploy -p vmware-prd-mid -t Ubuntu -r kubernetes-master -d us-east kube
 
 				if cpu > 0 {
 					config.CPU = cpu
-				} else if memory > 0 {
+				}
+				if memory > 0 {
 					config.Memory = memory
-				} else if disksize > 0 {
+				}
+				if disksize > 0 {
 					config.DiskSize = disksize
 				}
 
