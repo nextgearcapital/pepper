@@ -8,10 +8,10 @@ matrix:
 script:
 - make
 deploy:
-    provider: releases
-    api_key:
-        secure: "$GH_TOKEN"
-    file: pepper_linux_amd64
-    skip_cleanup: true
-    on:
-        tags: true
+  provider: releases
+  api_key:
+    secure: IXbzFrfLQxpiFMTzdYNzK2tE76X8OY9q8gOSUvv10KHbpSNqLCVnb8HY9GZmjgd4jSyopbmj4gcUouvppp+y/iApxRiIwBhl/UtpG75hX7pf079EJB7qF7IdEr/lJ+9zqRP7XnMpeikYbwIsGA/QhgN0M6qgY72pfLCCgenkGp93Asl57U74Io2e+pbiBGVcXIo4JykngQtCEeivKlOfAhHAkgWeu/CfH2D1Me66oAUCn1/BbL89CUX5qN/fJ9bb3BWr5UTMdqah5HUQv7Ke+wNDuZGbT49CjdhSudrQnlYLQ8wyxbQ1jZ0EoGEU8qJDQw5QtqR3XMrjoqsmTu/lWHLIvZhrhDuLTqz4C5A2WbT3+K6sODEWN7xrjA+lJ/Ita/H0s8/CVkiwRZ4KFbqTw7EOQdUraoi11ZBMyCpIIPnPUwikXtwclVvM0pKgE439NHH+QkvhvBZCAEL/K65t67jMYxeH0/11UVMGQd2sqk+/N/GGUFipFAg/9yV2sc3pIJ6j7x9FE8y0bok4FUkFjv7UKDd3nXp9wCgOMD1/8r4DeFeRNkzdnZKFaqnEHS4+UC1zm1RzWll4B5e5oPAXZ+mUt2vIiH7nbKp2ZFX8Kc8QtTn0pyuTJiKGUm3KdKHAWQB41kGfeVADxJcR5IT/ELwp4I37hPHhxgEOzjtSYqo=
+  file: pepper_linux_amd64
+  skip_cleanup: true
+  on:
+    tags: true
